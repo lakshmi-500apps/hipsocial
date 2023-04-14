@@ -5,9 +5,9 @@
         <div
           class="px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"
         >
-          <span class="font-semibold text-2xl"
+          <span class="font-semibold text-4xl"
             >{{ heading
-            }}<span class="ml-2 text-xs text-gray-600">{{
+            }}<span class="ml-2 mt-1 text-xs text-gray-600">{{
               headingDescription
             }}</span></span
           >
@@ -17,7 +17,7 @@
 
       <div class="mt-6 px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between">
-          <div><span class="font-semibold text-2xl">STREAMS</span></div>
+          <div><span class="font-semibold text-xl">STREAMS</span></div>
           <div>
        
             <Listbox as="div" v-model="selected" >
@@ -59,7 +59,7 @@
     <PlusCircleIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
    Add Stream
   </button></div>
-     <CollectionFaceBook :postMessages="messages" />
+     <CollectionFaceBookView :postMessages="messages" :openPostView="openPostView" />
     </main>
     <TransitionRoot as="template" :show="open">
     <Dialog as="div" class="relative z-10" @close="open = false">
@@ -107,6 +107,11 @@
       </transition>
     </div>
   </Listbox>
+  <button type="button" @click="openPostView=true" class=" mt-4 ml-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Posts</button>
+  <button type="button" class=" ml-4 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Mentions</button>
+  <button type="button" class=" ml-4 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Events</button>
+  <button type="button" class=" ml-4 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Timeline</button>
+
                   </div>
                 </div>
               </DialogPanel>
@@ -136,17 +141,13 @@ const options = [
 ]
 
 const selected = ref(options[0])
-const selectedValue =()=>{
-emit('selectedAccount',selected.value)
-}
+const openPostView=ref(false)
 
 
 const integratedAccounts = [
   {id:0,name:'Mantra',icon:UserCircleIcon},
-  { id: 1, name: 'Timeline',icon: AdjustmentsHorizontalIcon},
-  { id: 2, name: 'Mentions',icon: AtSymbolIcon},
-  { id: 3, name: 'Events' ,icon:CalendarDaysIcon},
-  { id: 4, name: 'Posts',icon: PhotoIcon}
+  { id: 1, name: 'Mantra LinkedIn',icon: UserCircleIcon},
+  { id: 2, name: 'Mantra Instagram',icon: UserCircleIcon}
   
 ]
 

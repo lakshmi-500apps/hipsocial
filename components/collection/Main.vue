@@ -76,10 +76,10 @@ const projects = [
 
 
 onMounted (async () => { await setTimeout(() => {
-  selectedAccount();
+  getPostMessages();
         }, 2000);})
 
-const selectedAccount=() =>{
+const getPostMessages=() =>{
   const {data:items} = useAuthLazyFetch('https://my.ap1.500apps.com/pcors?url=https%3A%2F%2Fapi.ap1.500apps.com%2Fhipsocial%2Fv1%2Ffacebook%2F33024%2Fconnections%2Fme%2Fposts%3Faccess_token%3DEAAHjENyerYYBAIGAIKXD10o4jC9qVRgKv0ykfOWXsMitJ9ZBfZAANEVfhMVOD6w2D3U6Km6tF1Om9Vy6dduRiIt9qiLaZAklOw3DQgx2p0J6vOuq5leVisms0kxykRQvTjCWlsXKzYVE600xoKMN2gYbub0A4luAa3BCax1OhdxNe8NyZAtr%26fields%3Dmessage%252Cfrom%257Bpicture%252Cname%257D%252Cupdated_time%252Cfull_picture%252Clikes.summary(1)%257Bid%252Ccan_post%252Cname%252Cpicture%252Cusername%257D%252Ccomments.limit(10).summary(1).order(reverse_chronological)%257Bcomment_count%252Clike_count%252Cmessage%252Cfrom%257Bname%252Cpicture%257D%252Ccreated_time%252Ccomments%257Bmessage%252Cname%252Cfrom%257Bname%252Cpicture%257D%257D%257D%252Cshares%252Cattachments','')
   messages.value=items?.value.data
 
