@@ -12,6 +12,7 @@
       </div>
 
       <div class="mt-5 flex h-0 flex-1 flex-col overflow-y-auto pt-1">
+        <!-- Navigation bar Starts Here -->
         <nav class="mt-6 px-3">
           <div class="space-y-1">
             <a
@@ -26,15 +27,42 @@
               ]"
               :aria-current="item.current ? 'page' : undefined"
             >
-            <component :is="item.icon" :class="[item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500', 'mr-3 h-6 w-6 flex-shrink-0']" aria-hidden="true" />
+              <component
+                :is="item.icon"
+                :class="[
+                  item.current
+                    ? 'text-gray-500'
+                    : 'text-gray-400 group-hover:text-gray-500',
+                  'mr-3 h-6 w-6 flex-shrink-0',
+                ]"
+                aria-hidden="true"
+              />
               {{ item.name }}
-              <component :is="item.dropdown" :class="[item.current ? 'text-dark-500' : 'text-dark-400 group-hover:text-dark-500', 'ml-8 h-6 w-6 flex-shrink-0']" aria-hidden="true" />
+              <component
+                :is="item.dropdown"
+                :class="[
+                  item.current
+                    ? 'text-dark-500'
+                    : 'text-dark-400 group-hover:text-dark-500',
+                  'ml-8 h-6 w-6 flex-shrink-0',
+                ]"
+                aria-hidden="true"
+              />
             </a>
           </div>
         </nav>
+        <!-- Navigation bar Ends Here -->
       </div>
     </div>
-   <CollectionList :heading="heading" :headingDescription="headingDescription" :messages="messages" />
+
+    <CollectionList
+      :heading="heading"
+      :headingDescription="headingDescription"
+      :messages="messages"
+      :timelinePosts="timelinePosts"
+      :events="events"
+      :Mentions="Mentions"
+    />
   </div>
 </template>
 
@@ -50,39 +78,78 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-import {
-  RectangleGroupIcon,
-  ChevronDownIcon
-} from "@heroicons/vue/24/outline";
+import { RectangleGroupIcon, ChevronDownIcon } from "@heroicons/vue/24/outline";
+import AppConfig from "@/app.config";
 
-const messages=ref([])
-const props=defineProps({heading:String,headingDescription:String})
+// Declaring Variables
+const messages = ref([]);
+const timelinePosts = ref([]);
+const events = ref([]);
+const Mentions = ref([]);
 
+interface Props {
+  heading: string;
+  headingDescription?: string;
+}
+// Define Props
+const props = withDefaults(defineProps<Props>(), {
+  heading: "HipSocial Streams",
+});
+
+// Show list of projects created
 const projects = [
-  { name: "SignUp", href: "#" ,dropdown:ChevronDownIcon},
+  { name: "SignUp", href: "#", dropdown: ChevronDownIcon },
   { name: "Home", href: "#" },
   { name: "Website  Builder", href: "#" },
   { name: "SEO", href: "#" },
   { name: "Blogs and Content", href: "#" },
-  { name: "Social+", href: "#",dropdown:ChevronDownIcon },
+  { name: "Social+", href: "#", dropdown: ChevronDownIcon },
   { name: "SEM", href: "#" },
-  { name: "Projects", href: "#",dropdown:ChevronDownIcon },
+  { name: "Projects", href: "#", dropdown: ChevronDownIcon },
   { name: "Demo1", href: "#" },
   { name: "Streams", href: "#" },
   { name: "Posts", href: "#" },
   { name: "Calendar", href: "#" },
-  { name: "Network", href: "#" ,icon: RectangleGroupIcon},
+  { name: "Network", href: "#", icon: RectangleGroupIcon },
 ];
 
+// Call each method to get data of integrated facebook account data
+onMounted(async () => {
+  await setTimeout(() => {
+    getPostMessages();
+    getTimelineMessages();
+    getEvents();
+    getMentions();
+  }, 2000);
+});
 
-onMounted (async () => { await setTimeout(() => {
-  getPostMessages();
-        }, 2000);})
+// To get Facebook Posts Data
+const getPostMessages = () => {
+  const { data: items } = useAuthLazyFetch(AppConfig.getFaceBookPostsUrl, "");
+  messages.value = items.value.data;
+};
 
-const getPostMessages=() =>{
-  const {data:items} = useAuthLazyFetch('https://my.ap1.500apps.com/pcors?url=https%3A%2F%2Fapi.ap1.500apps.com%2Fhipsocial%2Fv1%2Ffacebook%2F33024%2Fconnections%2Fme%2Fposts%3Faccess_token%3DEAAHjENyerYYBAIGAIKXD10o4jC9qVRgKv0ykfOWXsMitJ9ZBfZAANEVfhMVOD6w2D3U6Km6tF1Om9Vy6dduRiIt9qiLaZAklOw3DQgx2p0J6vOuq5leVisms0kxykRQvTjCWlsXKzYVE600xoKMN2gYbub0A4luAa3BCax1OhdxNe8NyZAtr%26fields%3Dmessage%252Cfrom%257Bpicture%252Cname%257D%252Cupdated_time%252Cfull_picture%252Clikes.summary(1)%257Bid%252Ccan_post%252Cname%252Cpicture%252Cusername%257D%252Ccomments.limit(10).summary(1).order(reverse_chronological)%257Bcomment_count%252Clike_count%252Cmessage%252Cfrom%257Bname%252Cpicture%257D%252Ccreated_time%252Ccomments%257Bmessage%252Cname%252Cfrom%257Bname%252Cpicture%257D%257D%257D%252Cshares%252Cattachments','')
-  messages.value=items?.value.data
+// Facebook Timeline Data get call
+const getTimelineMessages = () => {
+  const { data: items } = useAuthLazyFetch(
+    AppConfig.getFaceBookTimelineUrl,
+    ""
+  );
+  timelinePosts.value = items.value.data;
+};
 
-}
+// Get Facebook Events Data
+const getEvents = () => {
+  const { data: items } = useAuthLazyFetch(AppConfig.getFaceBookEventsUrl, "");
+  events.value = items.value.data;
+};
 
+// Get FaceBook Mentions Data
+const getMentions = () => {
+  const { data: items } = useAuthLazyFetch(
+    AppConfig.getFaceBookMentionsUrl,
+    ""
+  );
+  Mentions.value = items.value.data;
+};
 </script>
