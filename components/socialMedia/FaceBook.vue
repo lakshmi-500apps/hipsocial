@@ -20,15 +20,16 @@
                       <ul role="list" >
     <li  class="border ml-2 col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
    <div class="pl-2 pt-1 pb-1 flex border"> <div class="font-semibold text-lg">Posts</div>
-  <div class="ml-[9rem]"><ArrowPathIcon class="h-5 w-5"/></div><div><MagnifyingGlassIcon class="h-5 w-5"/></div><div><TrashIcon class="h-5 w-5"/></div><div><EllipsisVerticalIcon class="h-5 w-5"/></div></div>
-      <li v-if="postMessages.length>=1" v-for="message in postMessages" :key="message.id" >
+   <SocialMediaStreamHeader /></div>
+     
+  <li v-if="postMessages.length>=1" v-for="message in postMessages" :key="message.id" >
        
         <div class="pl-2 border mt-2 mb-2 ml-2 mr-2 " v-if="message.message">
           <div class="flex mt-1"><div><img class="h-6 w-6" :src="message.from.picture.data.url"/></div><div class="ml-2 mt-1">{{message.from.name}}</div></div>
           <div class="mt-1" >{{ message.message }}</div>
           <div v-if="message.full_picture"><img class="h-12 w-12"  :src="message.full_picture"/></div>
-      <div class="flex"><div><HandThumbUpIcon :class="` h-5 w-5 mt-3 mb-2 ${fill_color}`" @click="likePost(message.id)"/></div><div><ChatBubbleLeftIcon class="h-5 w-5 mt-3 mb-2 ml-2" @click="enableCommentInput=true"/></div>
-      <div><input class="border ml-2 mt-3 pl-2" v-if="enableCommentInput" v-model="comment" placeholder="Add Comment" @blur="addComment(message.id)"/></div>
+      <div class="flex"><div><HandThumbUpIcon :class="`h-5 w-5 mt-3 mb-2 ${fill_color}`" @click="likePost(message.id)"/></div><div><ChatBubbleLeftIcon class="h-5 w-5 mt-3 mb-2 ml-2" @click="enablecomment(message)"/></div>
+      <div v-for="input in commentArray" :key="input"><input class="border ml-2 mt-3 pl-2" v-if="input"  v-model="comment" placeholder="Add Comment" @blur="addComment(message.id)"/></div>
       <div class="ml-[7rem] mt-3">{{ (message.updated_time).substring(0,10) }}</div> </div></div>
       </li> 
       <div v-if="postMessages.length ==0 ">  <div class="text-center">
@@ -197,7 +198,7 @@ import { CheckIcon, ChevronUpDownIcon,PlusCircleIcon,ArrowPathIcon,MagnifyingGla
 
 let fill_color="fill-state-400";
 const comment=ref('');
-const enableCommentInput=ref(false)
+const enableCommentInput=ref(false);
   
 // Define Props
 const props=defineProps({openPostView:Boolean,postMessages:Array,openMentionView:Boolean,Mentions:Array,openTimelineView:Boolean,Timeline:Array,
@@ -227,5 +228,11 @@ const likePost= (data:any)=>{
     const { data: items } = useAuthLazyFetchPost(`${AppConfig.addFaceBookComment}/${data}`, postOptions); 
     comment.value='';
     enableCommentInput.value=false
+  }
+
+  const enablecomment=(data:any) =>{
+ const commentArray=  (props.postMessages?.map((comment) => comment.id === data.id ?  enableCommentInput.value = true :false )) ;
+  
+  console.log("fff",ff);
   }
 </script>
