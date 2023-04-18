@@ -16,11 +16,11 @@
                     
                       <div
                         class="p-4 bg-white shadow sm:rounded border border-gray-100"
-                      >
+                        id="posts" >
                       <ul role="list" >
     <li  class="border ml-2 col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
-   <div class="pl-2 pt-1 pb-1 flex border"> <div class="font-semibold text-lg">Posts</div>
-   <SocialMediaStreamHeader /></div>
+   <div class="pl-2 pt-1 pb-1 flex border" > <div class="font-semibold text-lg"  >Posts</div>
+   <SocialMediaStreamHeader @deleteGridster="deleteGridster('posts')"/></div>
      
   <li v-if="postMessages.length>=1" v-for="message in postMessages" :key="message.id" >
        
@@ -62,12 +62,12 @@
                     
                       <div
                         class="p-4 bg-white shadow sm:rounded border border-gray-100"
+                        id="timeline"
                       >
                       <ul role="list" >
     <li  class="border ml-2 col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
    <div class="pl-2 pt-1 pb-1 flex border"> <div class="font-semibold text-lg">Timeline</div>
-  <div class="ml-[9rem]"><ArrowPathIcon class="h-5 w-5"/></div><div><MagnifyingGlassIcon class="h-5 w-5"/></div><div><TrashIcon class="h-5 w-5"/></div><div><EllipsisVerticalIcon class="h-5 w-5"/></div></div>
-      <li v-if="Timeline.length >=1 " v-for="message in Timeline" :key="message.id" >
+   <SocialMediaStreamHeader @deleteGridster="deleteGridster('timeline')"/></div>      <li v-if="Timeline.length >=1 " v-for="message in Timeline" :key="message.id" >
        
         <div class="pl-2 border mt-2 mb-2 ml-2 mr-2" v-if="message.message">
           <div class="flex mt-1"><div><img class="h-6 w-6" :src="message.from.picture.data.url"/></div><div class="ml-2 mt-1">{{message.from.name}}</div></div>
@@ -107,12 +107,12 @@
                     
                       <div
                         class="p-4 bg-white shadow sm:rounded border border-gray-100"
+                        id="events"
                       >
                       <ul role="list" >
     <li  class="border ml-2 col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
    <div class="pl-2 pt-1 pb-1 flex border"> <div class="font-semibold text-lg">Events</div>
-  <div class="ml-[9rem]"><ArrowPathIcon class="h-5 w-5"/></div><div><MagnifyingGlassIcon class="h-5 w-5"/></div><div><TrashIcon class="h-5 w-5"/></div><div><EllipsisVerticalIcon class="h-5 w-5"/></div></div>
-      <li v-if="Events.length >=1 " v-for="message in Events" :key="message.id" >
+   <SocialMediaStreamHeader @deleteGridster="deleteGridster('events')"/></div>         <li v-if="Events.length >=1 " v-for="message in Events" :key="message.id" >
       
         <div class="pl-2 border mt-2 mb-2 ml-2 mr-2" v-if="message.message">
          
@@ -152,12 +152,12 @@
                     
                       <div
                         class="p-4 bg-white shadow sm:rounded border border-gray-100"
+                        id="mentions"
                       >
                       <ul role="list" >
     <li  class="border ml-2 col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
    <div class="pl-2 pt-1 pb-1 flex border"> <div class="font-semibold text-lg">Mentions</div>
-  <div class="ml-[9rem]"><ArrowPathIcon class="h-5 w-5"/></div><div><MagnifyingGlassIcon class="h-5 w-5"/></div><div><TrashIcon class="h-5 w-5"/></div><div><EllipsisVerticalIcon class="h-5 w-5"/></div></div>
-      <li v-if="Mentions.length >=1 " v-for="message in Mentions" :key="message.id" >
+   <SocialMediaStreamHeader @deleteGridster="deleteGridster('mentions')"/></div>         <li v-if="Mentions.length >=1 " v-for="message in Mentions" :key="message.id" >
       
         <div class="pl-2 border mt-2 mb-2 ml-2 mr-2" v-if="message.message">
          
@@ -232,7 +232,11 @@ const likePost= (data:any)=>{
 
   const enablecomment=(data:any) =>{
  const commentArray=  (props.postMessages?.map((comment) => comment.id === data.id ?  enableCommentInput.value = true :false )) ;
-  
-  console.log("fff",ff);
+
+  }
+
+  const deleteGridster =(data:any) =>{
+    const element = document.getElementById(data);
+   element.remove();
   }
 </script>
