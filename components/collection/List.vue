@@ -5,9 +5,12 @@
         <div
           class="px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"
         >
-        <!-- Display of heading and description goes here -->
-          <span class="font-semibold text-4xl" >{{ heading }}
-            <span class="ml-2 mt-1 text-xs text-gray-600">{{ headingDescription }}</span></span
+          <!-- Display of heading and description goes here -->
+          <span class="font-semibold text-4xl"
+            >{{ heading }}
+            <span class="ml-2 mt-1 text-xs text-gray-600">{{
+              headingDescription
+            }}</span></span
           >
         </div>
       </div>
@@ -16,6 +19,7 @@
         <div class="flex justify-between">
           <div><span class="font-semibold text-xl">STREAMS</span></div>
           <div>
+            <!-- Dropdown Options for Social Media Starts Here -->
             <Listbox as="div" v-model="selected">
               <div class="relative mt-2">
                 <ListboxButton
@@ -76,6 +80,7 @@
                 </transition>
               </div>
             </Listbox>
+            <!-- Dropdown Options for Social Media Ends Here -->
           </div>
         </div>
         <div>
@@ -87,6 +92,7 @@
       </div>
 
       <div class="ml-[79rem]">
+        <!-- On click of Add Stream button we will open a slideout where user can see integrated accounts and can select which gridster to been shown  -->
         <button
           @click="open = true"
           type="button"
@@ -96,6 +102,8 @@
           Add Stream
         </button>
       </div>
+
+      <!-- View of seleted streams data in gridster view Starts Here -->
       <CollectionFaceBookView
         :postMessages="messages"
         :openPostView="openPostView"
@@ -106,7 +114,10 @@
         :Mentions="Mentions"
         :openMentionView="openMentionView"
       />
+      <!-- View of seleted streams data in gridster view Ends Here -->
     </main>
+
+    <!-- Add Stream Sidebar Starts Here -->
     <TransitionRoot as="template" :show="open">
       <Dialog as="div" class="relative z-10" @close="open = false">
         <div class="fixed inset-0 overflow-hidden">
@@ -154,9 +165,9 @@
                             <span class="block truncate"
                               ><div class="flex">
                                 <div><UserCircleIcon class="h-10 w-10" /></div>
-                                <div class="text-2xl ml-1">Mantra</div>
+                                <div class="text-2xl ml-1">Hipsocial Testing</div>
                                 <div
-                                  class="ml-[-4.9rem] mt-[1.8rem] text-gray-500 text-xs"
+                                  class="ml-[-11.4rem] mt-[1.8rem] text-gray-500 text-xs"
                                 >
                                   Facebook
                                 </div>
@@ -260,6 +271,7 @@
         </div>
       </Dialog>
     </TransitionRoot>
+    <!-- Add Stream Sidebar Ends Here -->
   </div>
 </template>
 <script setup lang="ts">
@@ -295,6 +307,8 @@ import {
   ChatBubbleLeftIcon,
 } from "@heroicons/vue/20/solid";
 
+
+// Define Props
 const props = defineProps({
   heading: String,
   headingDescription: String,
@@ -304,6 +318,8 @@ const props = defineProps({
   Mentions: Array,
 });
 
+
+// Social Media Options for dropdown
 const options = [
   { id: 1, name: "View All" },
   { id: 2, name: "Facebook" },
@@ -311,18 +327,22 @@ const options = [
   { id: 4, name: "Instagram" },
 ];
 
+
+// Declaration of Variables
 const selected = ref(options[0]);
 const openPostView = ref(false);
 const openTimelineView = ref(false);
 const openEventsView = ref(false);
 const openMentionView = ref(false);
+const open = ref(false);
 
+
+// List of Integrated Accounts
 const integratedAccounts = [
-  { id: 0, name: "Mantra", icon: UserCircleIcon },
+  { id: 0, name: "Hipsocial Testing", icon: UserCircleIcon },
   { id: 1, name: "Mantra LinkedIn", icon: UserCircleIcon },
   { id: 2, name: "Mantra Instagram", icon: UserCircleIcon },
 ];
-
 const selectedFacebookOption = ref(integratedAccounts[0]);
-const open = ref(false);
+
 </script>

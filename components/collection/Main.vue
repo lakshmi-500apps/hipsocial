@@ -15,6 +15,11 @@
         <!-- Navigation bar Starts Here -->
         <nav class="mt-6 px-3">
           <div class="space-y-1">
+            <button
+                class="bg-purple-500 text-white active:bg-purple-600 font-bold uppercase text-sm rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 px-3 w-full py-2"
+                type="button"
+            >Sign Up</button>
+
             <a
               v-for="item in projects"
               :key="item.name"
@@ -38,6 +43,7 @@
                 aria-hidden="true"
               />
               {{ item.name }}
+          
               <component
                 :is="item.dropdown"
                 :class="[
@@ -86,6 +92,11 @@ const messages = ref([]);
 const timelinePosts = ref([]);
 const events = ref([]);
 const Mentions = ref([]);
+const getOptions={
+    params:{
+      fields:"message,from{picture,name},updated_time,full_picture,likes.summary(1){id,can_post,name,picture,username},comments.limit(10).summary(1).order(reverse_chronological){comment_count,like_count,message,from{name,picture},created_time,comments{message,name,from{name,picture}}},shares,attachments"
+    }
+  }
 
 interface Props {
   heading: string;
@@ -98,7 +109,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Show list of projects created
 const projects = [
-  { name: "SignUp", href: "#", dropdown: ChevronDownIcon },
   { name: "Home", href: "#" },
   { name: "Website  Builder", href: "#" },
   { name: "SEO", href: "#" },
@@ -125,15 +135,14 @@ onMounted(async () => {
 
 // To get Facebook Posts Data
 const getPostMessages = () => {
-  const { data: items } = useAuthLazyFetch(AppConfig.getFaceBookPostsUrl, "");
+  const { data: items } = useAuthLazyFetch(AppConfig.getFaceBookPostsUrl, getOptions);
   messages.value = items.value.data;
 };
 
 // Facebook Timeline Data get call
 const getTimelineMessages = () => {
   const { data: items } = useAuthLazyFetch(
-    AppConfig.getFaceBookTimelineUrl,
-    ""
+    AppConfig.getFaceBookTimelineUrl,getOptions
   );
   timelinePosts.value = items.value.data;
 };

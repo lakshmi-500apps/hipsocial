@@ -2,7 +2,9 @@
   <div class="w-full overflow-x-hidden h-screen">
     <div>
       <div class="flex">
-       
+         <!-- Gridster View of Streams Starts here -->
+         <!-- On click of Posts we display Facebook Posts Data
+           Posts View Starts Here -->
         <div v-if="openPostView" class="mt-[-2.75rem]">
           <div class="hidden sm:block">
             <div>
@@ -22,10 +24,12 @@
       <li v-if="postMessages.length>=1" v-for="message in postMessages" :key="message.id" >
        
         <div class="pl-2 border mt-2 mb-2 ml-2 mr-2 " v-if="message.message">
+          <div class="flex mt-1"><div><img class="h-6 w-6" :src="message.from.picture.data.url"/></div><div class="ml-2 mt-1">{{message.from.name}}</div></div>
           <div class="mt-1" >{{ message.message }}</div>
-         
-      <div class="flex"><div><HandThumbUpIcon :class="`${fill_color} h-5 w-5 mt-3 mb-2`" @click="likePost(message.id)"/></div><div><ChatBubbleLeftIcon class="h-5 w-5 mt-3 mb-2 ml-2 "/></div>
-      <div class="ml-[7rem] mt-3">{{ (message.created_time).substring(0,10) }}</div> </div></div>
+          <div v-if="message.full_picture"><img class="h-12 w-12"  :src="message.full_picture"/></div>
+      <div class="flex"><div><HandThumbUpIcon :class="` h-5 w-5 mt-3 mb-2 ${fill_color}`" @click="likePost(message.id)"/></div><div><ChatBubbleLeftIcon class="h-5 w-5 mt-3 mb-2 ml-2" @click="enableCommentInput=true"/></div>
+      <div><input class="border ml-2 mt-3 pl-2" v-if="enableCommentInput" v-model="comment" placeholder="Add Comment" @blur="addComment(message.id)"/></div>
+      <div class="ml-[7rem] mt-3">{{ (message.updated_time).substring(0,10) }}</div> </div></div>
       </li> 
       <div v-if="postMessages.length ==0 ">  <div class="text-center">
    
@@ -42,6 +46,10 @@
             </div>
           </div>
         </div>
+        <!-- Posts View Ends Here -->
+
+        <!-- On click of Timeline button in Add Stream Sidebar we will display Timeline Data
+        TimeLine View Starts Here -->
         <div v-if="openTimelineView" class="ml-3 mt-[-2.75rem]">
           <div class="hidden sm:block">
             <div>
@@ -61,11 +69,13 @@
       <li v-if="Timeline.length >=1 " v-for="message in Timeline" :key="message.id" >
        
         <div class="pl-2 border mt-2 mb-2 ml-2 mr-2" v-if="message.message">
-         
+          <div class="flex mt-1"><div><img class="h-6 w-6" :src="message.from.picture.data.url"/></div><div class="ml-2 mt-1">{{message.from.name}}</div></div>
           <div class="mt-1">{{ message.message }}</div>
-         
-      <div class="flex"><div><HandThumbUpIcon class="h-5 w-5 mt-3 mb-2" @click="likePost(message.id)"/></div><div><ChatBubbleLeftIcon class="h-5 w-5 mt-3 mb-2 ml-2 "/></div>
-      <div class="ml-[7rem] mt-3">{{ (message.created_time).substring(0,10) }}</div> </div></div>
+          <div v-if="message.full_picture"><img class="h-12 w-12"  :src="message.full_picture"/></div>
+      <div class="flex"><div><HandThumbUpIcon class="h-5 w-5 mt-3 mb-2" @click="likePost(message.id)"/></div><div><ChatBubbleLeftIcon class="h-5 w-5 mt-3 mb-2 ml-2 " @click="enableCommentInput=true"/></div>
+      <div><input class="border ml-2 mt-3 pl-2" v-if="enableCommentInput" v-model="comment" placeholder="Add Comment" @blur="addComment(message.id)"/></div>
+
+      <div class="ml-[7rem] mt-3">{{ (message.updated_time).substring(0,10) }}</div> </div></div>
       </li> 
       <div v-if="Timeline.length ==0 ">  <div class="text-center">
    
@@ -82,6 +92,9 @@
             </div>
           </div>
         </div>
+        <!-- TimeLine View Ends Here -->
+
+        <!-- Events View Starts Here -->
         <div v-if="openEventsView" class=" ml-3 mt-[-2.75rem]">
           <div class="hidden sm:block">
             <div>
@@ -104,7 +117,9 @@
          
           <div class="mt-1">{{ message.message }}</div>
          
-      <div class="flex"><div><HandThumbUpIcon class="h-5 w-5 mt-3 mb-2" @click="likePost(message.id)"/></div><div><ChatBubbleLeftIcon class="h-5 w-5 mt-3 mb-2 ml-2 "/></div>
+      <div class="flex"><div><HandThumbUpIcon class="h-5 w-5 mt-3 mb-2" @click="likePost(message.id)"/></div><div><ChatBubbleLeftIcon class="h-5 w-5 mt-3 mb-2 ml-2 " @click="enableCommentInput=true"/></div>
+      <div><input class="border ml-2 mt-3 pl-2" v-if="enableCommentInput" v-model="comment" placeholder="Add Comment" @blur="addComment(message.id)"/></div>
+
       <div class="ml-[7rem] mt-3">{{ (message.created_time).substring(0,10) }}</div> </div></div>
       </li> 
       <div v-if="Events.length ==0 ">  <div class="text-center">
@@ -122,6 +137,9 @@
             </div>
           </div>
         </div>
+         <!-- Events View Ends Here -->
+
+         <!-- Mentions View Starts Here -->
         <div v-if="openMentionView" class=" ml-3 mt-[-2.75rem]">
           <div class="hidden sm:block">
             <div>
@@ -144,7 +162,9 @@
          
           <div class="mt-1">{{ message.message }}</div>
          
-      <div class="flex"><div><HandThumbUpIcon class="h-5 w-5 mt-3 mb-2" @click="likePost(message.id)"/></div><div><ChatBubbleLeftIcon class="h-5 w-5 mt-3 mb-2 ml-2 "/></div>
+      <div class="flex"><div><HandThumbUpIcon class="h-5 w-5 mt-3 mb-2" @click="likePost(message.id)"/></div><div><ChatBubbleLeftIcon class="h-5 w-5 mt-3 mb-2 ml-2 " @click="enableCommentInput=true"/></div>
+      <div><input class="border ml-2 mt-3 pl-2" v-if="enableCommentInput" v-model="comment" placeholder="Add Comment" @blur="addComment(message.id)"/></div>
+
       <div class="ml-[7rem] mt-3">{{ (message.created_time).substring(0,10) }}</div> </div></div>
       </li> 
       <div v-if="Mentions.length ==0 ">  <div class="text-center">
@@ -162,8 +182,10 @@
             </div>
           </div>
         </div>
+         <!-- Mentions View Ends Here -->
       </div>
     </div>
+     <!-- Gridster View of Streams Ends here -->
   </div>
 </template>
 <script setup lang="ts">
@@ -173,20 +195,37 @@ import { CheckIcon, ChevronUpDownIcon,PlusCircleIcon,ArrowPathIcon,MagnifyingGla
   import {  PlusIcon } from '@heroicons/vue/20/solid'
   import AppConfig from "@/app.config";
 
-  let fill_color="fill-state-400";
+let fill_color="fill-state-400";
+const comment=ref('');
+const enableCommentInput=ref(false)
   
- const props=defineProps({openPostView:Boolean,postMessages:Array,openMentionView:Boolean,Mentions:Array,openTimelineView:Boolean,Timeline:Array,
+// Define Props
+const props=defineProps({openPostView:Boolean,postMessages:Array,openMentionView:Boolean,Mentions:Array,openTimelineView:Boolean,Timeline:Array,
   openEventsView:Boolean, Events:Array})
 
-  const likePost= (data:any)=>{
+
+//  On click of Like button we are updating status by liking the post
+const likePost= (data:any)=>{
   fill_color= fill_color ==="fill-state-400"?"fill-current":"fill-state-400";
-  console.log("fil--",fill_color);
   
        const postOptions = {
     body: {
-       access_token: "EAAHjENyerYYBAEvykXyhToaBtPn6coJFkBcjzvB9rGQR06Hqf1tSRfl5yMUx6V33df4JWVFQlzlQs0ZAdhcVYX8fZCHudLZCsLOIvPoxhDn4te0qMXSrD4RoLZA1oZBjwD8vWKXCBj2IXeZAUAV1ZCaSa8IdUrIE0DkTTNuhZAoED8YD39zHkvP5sORXl2D630MZD",
+       access_token: "EAAHjENyerYYBALIRdIQzBvtp78f3OpnPjkPiKZB96CCiubU9zCxeIhKGhWAhkoRmJSubcixZAZBxZCPELVyweZATu32loikOrJCkZAS1atnyTLP3ns8zHnMOfmHuznJxmxqp4ulHNMlTXqjSRIfjQj5pNpI5lznAbAQwE2UG7O7EA6baUnXiBp",
        id: `${data}`},
   };
     const { data: items } = useAuthLazyFetchPost(AppConfig.likeFaceBookPost, postOptions); 
+  }
+
+// Add Comment 
+  const addComment =(data:any)=>{
+    const postOptions={
+      body:{
+ access_token: "EAAHjENyerYYBALIRdIQzBvtp78f3OpnPjkPiKZB96CCiubU9zCxeIhKGhWAhkoRmJSubcixZAZBxZCPELVyweZATu32loikOrJCkZAS1atnyTLP3ns8zHnMOfmHuznJxmxqp4ulHNMlTXqjSRIfjQj5pNpI5lznAbAQwE2UG7O7EA6baUnXiBp",
+  message: comment.value
+      }
+    }
+    const { data: items } = useAuthLazyFetchPost(`${AppConfig.addFaceBookComment}/${data}`, postOptions); 
+    comment.value='';
+    enableCommentInput.value=false
   }
 </script>
